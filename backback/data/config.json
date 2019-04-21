@@ -1,0 +1,41 @@
+{
+  "#": [
+    "folders in 'local' are rsynced from 'from' to 'to'",
+    "",
+    "remote 'folders' are rsynced via ssh as 'user' from 'address' to 'internal'",
+    "and, if specified, also to 'external'"
+  ],
+  "local": [{
+      "from": "/run/media/usr/data/foo",
+      "to": "/run/media/usr/ext_hdd/foo"
+    },
+    {
+      "from": "/run/media/usr/data/bar",
+      "to": "/run/media/usr/ext_hdd/bar"
+    }
+  ],
+  "remote": {
+    "remote-1": {
+      "user": "root",
+      "address": "192.168.1.2",
+      "port": 2222,
+      "folders": [
+        "/var/www/",
+        "/home/usr/"
+      ],
+      "internal": "/run/media/usr/data/remote-1/",
+      "external": "/run/media/usr/ext_hdd/remote-1/"
+    },
+    "remote-2": {
+      "user": "root",
+      "address": "192.168.1.3",
+      "folders": [
+        "/var/opt/docker",
+        "/etc/apache2/",
+        "/home/pi"
+      ],
+      "internal": "/run/media/usr/data/remote-2/",
+      "external": "/run/media/usr/ext_hdd/remote-2/"
+    }
+  }
+}
