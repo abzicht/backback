@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import sys, os
-import json
 from prompt_toolkit import prompt
 
 try:
