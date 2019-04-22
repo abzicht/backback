@@ -83,7 +83,7 @@ class Rankshell:
 
     @staticmethod
     def verbose_list() -> str:
-        str_ = '┌ Scheduled procedures (ordered by execution order)\n'
+        str_ = '┌Scheduled procedures (ordered by execution order)\n'
         Rankshell.shells = sort_by_rank(Rankshell.shells)
         for i, shell in enumerate(Rankshell.shells):
             char = '├'

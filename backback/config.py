@@ -14,7 +14,7 @@ class Config:
 
     @staticmethod
     def init():
-        deja       = prompt('Run deja-dup at first? (Y/n) ')
+        deja       = prompt('Run deja-dup? (Y/n) ')
         external   = prompt('Backup to external storage? (y/N) ')
         passphrase = prompt('Enter ssh passphrase (~/.ssh/id_rsa or similar): ', is_password=True)
 
