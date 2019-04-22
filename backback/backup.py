@@ -1,8 +1,8 @@
 
-class Backup:
+class Backup():
     
-    def __init__(self):
-        pass
+    def __init__(self, rank):
+        self.rank = rank
 
     def backup(self) -> (str, str):
         try:
@@ -12,3 +12,6 @@ class Backup:
 
     def __backup__(self) -> (str, str):
         return None, None
+
+    def __repr__(self):
+        return 'backup #{}'.format(self.rank)

@@ -1,27 +1,41 @@
 import sys, os
 
 try:
-    from backback.backup import Backup
+    import backback.backup as backup
     from backback.util import run_cmd
 except ImportError:
-    from backup import Backup
+    import backup
     from util import run_cmd
 
-class Remote(Backup):
+class Remote(backup.Backup):
 
     def __init__(self,
+                 rank:       int,
                  user:       str,
                  address:    str,
                  passphrase: str,
                  folders:    list,
                  target:     str,
                  port:       int=22):
+        super().__init__(rank)
         self.user       = user
         self.address    = address
         self.passphrase = passphrase
         self.folders    = folders
         self.target     = target
         self.port       = port
+
+    @staticmethod
+    def init(config_dict: dict, passphrase):
+        return Remote(
+                rank       = config_dict['rank'],
+                user       = config_dict['user'],
+                address    = config_dict['address'],
+                passphrase = passphrase,
+                folders    = config_dict['folders'],
+                target     = config_dict['internal'],
+                port       = config_dict['port'] if 'port' in config_dict else 22
+                )
 
     def __backup__(self):
         cmd = []

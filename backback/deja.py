@@ -1,11 +1,14 @@
 try:
-    from backback.backup import Backup
+    import backback.backup as backup
     from backback.util import run_cmd
 except ImportError:
-    from backup import Backup
+    import backup
     from util import run_cmd
 
-class Deja(Backup):
+class Deja(backup.Backup):
+    
+    def __init__(self, config_dict: dict):
+        super().__init__(config_dict['rank'])
 
     def __backup__(self):
         cmd = (["deja-dup", "--backup"])
