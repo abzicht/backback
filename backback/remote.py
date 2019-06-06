@@ -46,7 +46,8 @@ class Remote(backup.Backup):
         cmd += ["rsync", "-avrtlzp"]
         for folder in self.folders:
             cmd.append("{}@{}:{}".format(self.user, self.address, folder))
-        cmd.append(self.target)
+        cmd += [self.target]
+        cmd += ["--rsh='ssh -p{}'".format(self.port)]
         cmd = ' '.join(cmd)
         return run_cmd(cmd, shell=True)
 

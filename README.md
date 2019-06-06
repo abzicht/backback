@@ -22,9 +22,8 @@ needs. When that is done, run `backback` from the command line:
 backback
 ```
 
-* backback asks you for the passphrase of your ssh key. If you do not own a ssh key,
-skip this step by pressing enter. backback will then ask you for the required
-ssh password.
+* backback asks you for the passphrase of your ssh key. If you do not own a ssh key, skip this step by pressing enter.
+  backback will then ask you for the required ssh password.
 * backback offers the functionality to automatically store remote data to multiple
 locations. This comes in handy when data is supposed to also be copied to an
 external hdd. backback asks you whether or not to store data to an external hdd.

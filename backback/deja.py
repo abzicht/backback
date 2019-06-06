@@ -6,7 +6,7 @@ except ImportError:
     from util import run_cmd
 
 class Deja(backup.Backup):
-    
+
     def __init__(self, config_dict: dict):
         super().__init__(config_dict['rank'])
 

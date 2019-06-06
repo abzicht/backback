@@ -24,7 +24,7 @@ class BackupThread(threading.Thread):
     def __str__(self):
         return str(self.procedure)
 
-  
+
 
 class Rankshell:
 

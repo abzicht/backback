@@ -48,13 +48,6 @@ def main():
 
     # prompt the user with the specified backup plan and
     # ask whether backup execution should start
-#    for i, procedure in enumerate(backup_procedures):
-#        char = '├'
-#        if i == 0:
-#            char = '┌'
-#        if i == len(backup_procedures) - 1:
-#            char = '└'
-#        print(char, i+1, procedure)
     print(Rankshell.verbose_list())
     start_ = prompt('Start backup? (Y/n) ')
     start_ = True if len(start_) == 0 or start_.lower() == 'y' else False
