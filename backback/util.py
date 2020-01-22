@@ -1,6 +1,10 @@
 import sys
 from subprocess import run, PIPE
 
+def mkdirs(directory: str, shell: bool=False):
+    cmd = (["mkdir", "-p", directory])
+    run_cmd(cmd)
+
 def run_cmd(cmd, shell: bool=False) -> (str, str):
         result = run(cmd,
                      stdout = PIPE,

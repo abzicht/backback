@@ -3,9 +3,11 @@ import sys, os
 try:
     import backback.backup as backup
     from backback.util import run_cmd
+    from backback.util import mkdirs
 except ImportError:
     import backup
     from util import run_cmd
+    from util import mkdirs
 
 class Local(backup.Backup):
 
@@ -24,6 +26,7 @@ class Local(backup.Backup):
 
     def __backup__(self):
         cmd = (["rsync", "-avrtlzp", self.from_, self.to_])
+        mkdirs(self.to_)
         return run_cmd(cmd)
 
     def __str__(self):

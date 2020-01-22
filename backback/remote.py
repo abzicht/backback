@@ -3,9 +3,11 @@ import sys, os
 try:
     import backback.backup as backup
     from backback.util import run_cmd
+    from backback.util import mkdirs
 except ImportError:
     import backup
     from util import run_cmd
+    from util import mkdirs
 
 class Remote(backup.Backup):
 
@@ -49,6 +51,7 @@ class Remote(backup.Backup):
         cmd += [self.target]
         cmd += ["--rsh='ssh -p{}'".format(self.port)]
         cmd = ' '.join(cmd)
+        mkdirs(self.target)
         return run_cmd(cmd, shell=True)
 
     def __str__(self):
