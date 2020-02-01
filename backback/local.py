@@ -25,7 +25,7 @@ class Local(backup.Backup):
                 )
 
     def __backup__(self):
-        cmd = (["rsync", "-avrtlzp", self.from_, self.to_])
+        cmd = (["rsync", "-avrtlzzp", self.from_, self.to_])
         mkdirs(self.to_)
         return run_cmd(cmd)
 
