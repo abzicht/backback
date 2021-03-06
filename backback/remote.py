@@ -55,4 +55,4 @@ class Remote(backup.Backup):
         return run_cmd(cmd, shell=True)
 
     def __str__(self):
-        return "REMOTE: {} -> {}".format(self.folders, self.target)
+        return "REMOTE: {}@{} {} -> {}".format(self.user, self.address, self.folders, self.target)

@@ -20,6 +20,14 @@
       "to": "/run/media/usr/ext_hdd/bar"
     }
   ],
+  "duplicity": [
+    {
+      "rank": 1,
+      "from": "/run/media/usr/data/foo",
+      "to": "/run/media/usr/ext_hdd/foo"
+      "options": ["full"]
+    }
+  ],
   "remote": {
     "remote-1": {
       "rank": 2,

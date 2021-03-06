@@ -1,24 +1,31 @@
 import os
 import json
+import yaml
 from pathlib import Path
-from prompt_toolkit import prompt
+
+try:
+    from backback.util import prompt_
+except ImportError:
+    from util import prompt_
 
 class Config:
 
-    def __init__(self, passphrase:str, external: bool=False, deja: bool=True):
-        self.external = external
+    def __init__(self, duplicity:bool=True, remote: bool=False, passphrase:str=None, deja: bool=True):
+        self.remote = remote
         self.passphrase = passphrase
         self.deja = deja
-        with open(os.path.join(str(Path.home()), '.backback/config.json'), 'r') as config_file:
-            self.d = json.load(config_file)
+        self.duplicity = duplicity
+        with open(os.path.join(str(Path.home()), '.backback/config.yml'), 'r') as config_file:
+            self.d = yaml.load(config_file, Loader=yaml.SafeLoader)
 
     @staticmethod
     def init():
-        deja       = prompt('Run deja-dup? (Y/n) ')
-        external   = prompt('Backup to external storage? (y/N) ')
-        passphrase = prompt('Enter ssh passphrase (~/.ssh/id_rsa or similar): ', is_password=True)
+        duplicity  = prompt_('Run duplicity?',default=True)
+        deja       = prompt_('Run deja-dup?',default=False)
+        remote     = prompt_('Backup from external storage?',default=False)
+        passphrase = None
 
-        deja       = True if len(deja) == 0 or deja.lower() == 'y' else False
-        external   = False if len(external) == 0 or external.lower() == 'n' else True
-        passphrase = None if passphrase is None or len(passphrase) == 0 else passphrase
-        return Config(passphrase, external=external, deja=deja)
+        if remote:
+            passphrase = prompt_('Enter ssh passphrase:', is_password=True)
+
+        return Config(passphrase=passphrase, duplicity=duplicity, remote=remote, deja=deja)
