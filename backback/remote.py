@@ -38,7 +38,7 @@ class Remote(backup.Backup):
                 passphrase = passphrase,
                 folders    = config_dict['folders'],
                 target     = config_dict['internal'],
-                port       = config_dict['port'] if 'port' in config_dict else 22
+                port       = config_dict['port'] if 'port' in config_dict else 22,
                 options    = config_dict['options'] if 'options' in config_dict else None,
                 )
 
@@ -49,7 +49,7 @@ class Remote(backup.Backup):
             cmd += ["-P", "passphrase",
                     "-p", self.passphrase]
         cmd += ["rsync"]
-        cmd += [self.options]
+        cmd += self.options
         for folder in self.folders:
             cmd.append("{}@{}:{}".format(self.user, self.address, folder))
         cmd += [self.target]

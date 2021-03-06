@@ -29,6 +29,8 @@ def prompt_(question, is_password:bool=False, default:bool=True):
     else:
         question += ' '
     answer = prompt(question, is_password=is_password)
+    if is_password:
+        return answer
     if default:
         return True  if len(answer) == 0 or answer.lower() == 'y' else False
     else:
