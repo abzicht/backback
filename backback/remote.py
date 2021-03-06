@@ -18,7 +18,8 @@ class Remote(backup.Backup):
                  passphrase: str,
                  folders:    list,
                  target:     str,
-                 port:       int=22):
+                 port:       int=22,
+                 options:list = ['-avrtlzp']):
         super().__init__(rank)
         self.user       = user
         self.address    = address
@@ -26,6 +27,7 @@ class Remote(backup.Backup):
         self.folders    = folders
         self.target     = target
         self.port       = port
+        self.options    = options if options is not None else ['-avrtlzp']
 
     @staticmethod
     def init(config_dict: dict, passphrase):
@@ -37,6 +39,7 @@ class Remote(backup.Backup):
                 folders    = config_dict['folders'],
                 target     = config_dict['internal'],
                 port       = config_dict['port'] if 'port' in config_dict else 22
+                options    = config_dict['options'] if 'options' in config_dict else None,
                 )
 
     def __backup__(self):
@@ -45,7 +48,8 @@ class Remote(backup.Backup):
             cmd  = ["sshpass"]
             cmd += ["-P", "passphrase",
                     "-p", self.passphrase]
-        cmd += ["rsync", "-avrtlzp"]
+        cmd += ["rsync"]
+        cmd += [self.options]
         for folder in self.folders:
             cmd.append("{}@{}:{}".format(self.user, self.address, folder))
         cmd += [self.target]

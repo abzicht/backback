@@ -28,7 +28,7 @@ home = str(Path.home())
 
 setup(
     name='backback',
-    version="1.0.0",
+    version="1.0.1",
     python_requires='>={}.{}'.format(*REQUIRED_PYTHON),
     author='Abzicht',
     author_email='abzicht@gmail.com',
@@ -41,7 +41,7 @@ setup(
        'backback = backback.script:main',
     ]},
     data_files=[
-        (os.path.join(home, '.backback/'), ['backback/data/config.json']),
+        (os.path.join(home, '.backback/'), ['backback/data/config.yml']),
     ],
     install_requires=['prompt_toolkit'],
 )

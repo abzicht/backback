@@ -11,10 +11,11 @@ except ImportError:
 
 class Local(backup.Backup):
 
-    def __init__(self, rank: int, from_: str, to_: str):
+    def __init__(self, rank: int, from_: str, to_: str, options:list=['-avrtlzzp']):
         super().__init__(rank)
         self.from_ = from_ 
         self.to_   = to_
+        self.options = options if options is not None else ['-avrtlzzp']
 
     @staticmethod
     def init(config_dict: dict):
@@ -22,10 +23,15 @@ class Local(backup.Backup):
                 rank       = config_dict['rank'],
                 from_      = config_dict['from'],
                 to_        = config_dict['to'],
+                options    = config_dict['options'] if 'options' in config_dict else None,
                 )
 
     def __backup__(self):
-        cmd = (["rsync", "-avrtlzzp", self.from_, self.to_])
+        args = ['rsync']
+        args += self.options
+        args.append(self.from_)
+        args.append(self.to_)
+        cmd = (args)
         mkdirs(self.to_)
         return run_cmd(cmd)
 
