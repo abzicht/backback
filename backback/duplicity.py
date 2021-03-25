@@ -33,7 +33,7 @@ class Duplicity(backup.Backup):
             args.append(self.from_)
         args.append(self.to_)
         cmd = (args)
-        mkdirs(self.to_)
+        #mkdirs(self.to_)
         return run_cmd(cmd)
 
     def __str__(self):
