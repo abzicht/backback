@@ -1,12 +1,12 @@
 # backback
 
-A very specific tool for backing up things.
+`backback` is a very specific tool for backing up things.
 
-Utilizes:
+It utilizes:
 
+* rsync
 * deja-dup [opt.]
 * duplicity [opt.]
-* rsync
 * ssh [opt.]
 * sshpass [opt.]
 
@@ -16,17 +16,25 @@ cd backback
 python setup.py install
 ```
 
-Before running `backback`, make sure to adjust `~/.backback/config.yml` to your
+Before running backback, make sure to adjust `~/.backback/config.yml` to your
 needs. When that is done, run `backback` from the command line:
 
 ```bash
 backback
 ```
 
-* backback asks you whether [deja-dup](https://gitlab.gnome.org/World/deja-dup) or duplicity should be executed.
-  This assumes that deja-dup or duplicity is installed on your system.
-* backback asks you for the passphrase of your ssh key. If you do not own a ssh key, skip this step by pressing enter.
-  backback will then ask you for the required ssh password.
+`backback` runs only local rsync commands, if not otherwise specified.
+Running duplicity, deja-dup, or remote backups requires activation via flags:
+
+```bash
+# Run local and remote rsync as well as duplicity:
+backback --remote --duplicity
+# Run local rsync and deja-dup:
+backback --deja-dup
+```
+
+If activated, backback asks you for ssh and duplicity passphrases. Those can
+be skipped, if not required.
 
 ## Features
 
