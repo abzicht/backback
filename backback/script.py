@@ -42,12 +42,12 @@ def main():
     if c.duplicity:
         if 'duplicity' in c.d:
             for entry in c.d['duplicity']:
-                duplicity = Duplicity.init(entry)
+                duplicity = Duplicity.init(entry, c.duplicity_passphrase)
                 Rankshell.add(duplicity)
     if c.remote:
         if 'remote' in c.d:
             for entry in c.d['remote']:
-                remote = Remote.init(entry, c.passphrase)
+                remote = Remote.init(entry, c.ssh_passphrase)
                 Rankshell.add(remote)
 
     # prompt the user with the specified backup plan and

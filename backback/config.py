@@ -11,10 +11,12 @@ except ImportError:
 
 class Config:
 
-    def __init__(self, config_file, duplicity:bool=True, remote: bool=False, passphrase:str=None, deja: bool=True):
+    def __init__(self, config_file, duplicity:bool=True, remote: bool=False,
+            ssh_passphrase:str=None, duplicity_passphrase:str=None, deja: bool=True):
         config_file = config_file
         self.remote = remote
-        self.passphrase = passphrase
+        self.ssh_passphrase = ssh_passphrase
+        self.duplicity_passphrase = duplicity_passphrase
         self.deja = deja
         self.duplicity = duplicity
         with open(config_file, 'r') as config_file:
@@ -23,8 +25,8 @@ class Config:
     @staticmethod
     def args():
         parser = argparse.ArgumentParser()
-        parser.add_argument('--duplicity', dest='duplicity', help='Run duplicity. Default: True',
-                action='store_true', default=True)
+        parser.add_argument('--duplicity', dest='duplicity', help='Run duplicity. Default: False',
+                action='store_true', default=False)
         parser.add_argument('--deja-dup', dest='deja_dup', help='Run Deja-Dup. Default: False',
                 action='store_true', default=False)
         parser.add_argument('--remote', dest='remote', help='Backup from remote. Default: False',
@@ -37,11 +39,16 @@ class Config:
     @staticmethod
     def init():
         args = Config.args()
-        passphrase = None
+        ssh_passphrase = None
+        duplicity_passphrase = None
 
         if args.remote:
-            passphrase = prompt_('Enter ssh passphrase:', is_password=True)
+            ssh_passphrase = prompt_('Enter ssh passphrase:', is_password=True)
+        if args.duplicity:
+            duplicity_passphrase = prompt_('Enter duplicity passphrase:', is_password=True)
 
-        return Config(config_file=args.config_file, passphrase=passphrase,
+        return Config(config_file=args.config_file,
+                ssh_passphrase=ssh_passphrase,
                 duplicity=args.duplicity,
+                duplicity_passphrase=duplicity_passphrase,
                 remote=args.remote, deja=args.deja_dup)
