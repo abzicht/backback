@@ -1,0 +1,70 @@
+# There are 5 features:
+#   dejadup
+#   local
+#   duplicity
+#   remote
+#   manual
+#
+# dejadup only needs to know, when it is run. Hence, it is given a `rank`
+#
+# The rest of the features hold lists of entries.
+#   Each entry has a `rank` for execution order.
+#
+#   local:
+#       Copies folders or files from `from` to `to` via rsync.
+#       It is optional to specify rsync options via `options`.
+#       The default `options` (if not otherwise specified) is `-avrtlzzp`
+#   remote:
+#       Copies folders or files via rsync using ssh.
+#       Connects to `address` with `user` and copies all folders given as a
+#       list in `folders` to the local directory `internal`.
+#       The ssh passphrase is given via STDIN at runtime.
+#   duplicity:
+#       Archives data at `from` to `to`.
+#       Duplicity can be fully modified using the `options` list.
+#       The `from` entry is optional and required depending on the
+#       configuration passed as `options`.
+#   manual:
+#       manual allows full control by passing a command as argument list `cmd`.
+
+
+dejadup:
+    rank: 0
+
+local:
+    - rank: 0
+      from: /tmp
+      to: /tmp2
+      options:
+        - "-rva"
+    - rank: 0
+      from: /tmp3
+      to: /tmp4
+duplicity:
+    - rank: 1
+      from: /tmp/
+      to: "file:///tmp3"
+      options:
+          - incremental
+          - "--no-encryption"
+          - "--full-if-older-than"
+          - 4M
+    - rank: 2
+      to: "file:///tmp3"
+      options:
+          - remove-older-than
+          - 8M
+remote:
+    - rank: 3
+      user: root
+      address: 192.168.1.5
+      options:
+          - "-avrtlzp"
+      folders:
+          - /tmp
+      internal: /tmp4/
+manual:
+    - rank: 5
+      cmd:
+          - ls
+          - -al
