@@ -13,10 +13,10 @@ class Local(backup.Backup):
 
     def __init__(self, rank: int, from_: str, to_: str, exclude: list=None, options:list=None):
         super().__init__(rank)
-        self.from_ = from_ 
+        self.from_ = from_
         self.to_   = to_
         self.exclude = exclude if exclude is not None else []
-        self.options = options if options is not None else ['-av', '--inplace']
+        self.options = options if options is not None else ['-av', '--inplace', '--delete-during']
 
     @staticmethod
     def init(config_dict: dict):

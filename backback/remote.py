@@ -19,7 +19,7 @@ class Remote(backup.Backup):
                  folders:    list,
                  target:     str,
                  port:       int=22,
-                 options:list = ['-avrtlzp']):
+                 options:list = None):
         super().__init__(rank)
         self.user       = user
         self.address    = address
@@ -27,7 +27,7 @@ class Remote(backup.Backup):
         self.folders    = folders
         self.target     = target
         self.port       = port
-        self.options    = options if options is not None else ['-avrtlzp']
+        self.options    = options if options is not None else ['-avz', '--delete-during']
 
     @staticmethod
     def init(config_dict: dict, passphrase):
