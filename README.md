@@ -14,6 +14,7 @@ It utilizes:
 git clone https://github.com/abzicht/backback
 cd backback
 python setup.py install
+# this creates a file under ~/.backback/config.yml
 ```
 
 Before running backback, make sure to adjust `~/.backback/config.yml` to your

@@ -13,7 +13,6 @@ class Config:
 
     def __init__(self, config_file, duplicity:bool=True, remote: bool=False,
             ssh_passphrase:str=None, duplicity_passphrase:str=None, deja: bool=True):
-        config_file = config_file
         self.remote = remote
         self.ssh_passphrase = ssh_passphrase
         self.duplicity_passphrase = duplicity_passphrase

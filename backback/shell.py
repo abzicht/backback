@@ -1,14 +1,12 @@
-import threading 
+import threading
 import logging
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s (%(levelname)s): %(message)s')
 
-try:
-    from backback.util import sort_by_rank 
-except ImportError:
-    from util import sort_by_rank 
-
 class BackupThread(threading.Thread):
+    """
+    Helper class for running single backup procedures in extra threads.
+    """
     def __init__(self, procedure):
         super().__init__()
         self.procedure = procedure
@@ -20,6 +18,7 @@ class BackupThread(threading.Thread):
             logging.debug(output)
         if err is not None and len(err) != 0:
             logging.warning(err)
+        logging.info("Backup finished: {}".format(self.procedure))
 
     def __str__(self):
         return str(self.procedure)
@@ -27,19 +26,31 @@ class BackupThread(threading.Thread):
 
 
 class Rankshell:
-
-    shells = []
+    """
+    This class represents all backup procedures of the same rank.
+    Use "add_procedure" initially and use "run" to start all registered
+    procedures in parallel. "str(Rankshell)" gives a visual overview of the
+    registered procedures.
+    """
 
     def __init__(self, rank: int):
         self.rank = rank
         self.procedures = []
 
     def add_procedure(self, procedure):
+        """
+        Add another procedure to the shell. The procedure class must implement
+        a function of syntax "backup() -> output, error"
+        """
         if self.rank != procedure.rank:
             raise ValueError("Procedure rank {} does not match shell rank {}".format(procedure.rank, self.rank))
         self.procedures.append(procedure)
 
     def run(self):
+        """
+        Run all procedures in parallel using the
+        "BackupThread" class.
+        """
         threads = []
         for procedure in self.procedures:
             thread = BackupThread(procedure)
@@ -62,41 +73,4 @@ class Rankshell:
                 char = '└'
                 newline = ''
             str_+= char + str(procedure) + newline 
-        return str_
-
-
-    @staticmethod
-    def add(procedure):
-        for shell in Rankshell.shells:
-            if shell.rank == procedure.rank:
-                shell.add_procedure(procedure)
-                return
-        shell = Rankshell(procedure.rank)
-        shell.add_procedure(procedure)
-        Rankshell.shells.append(shell)
-
-    @staticmethod
-    def execute():
-        Rankshell.shells = sort_by_rank(Rankshell.shells)
-        for shell in Rankshell.shells:
-            shell.run()
-
-    @staticmethod
-    def verbose_list() -> str:
-        str_ = '┌Scheduled procedures (ordered by execution order)\n'
-        Rankshell.shells = sort_by_rank(Rankshell.shells)
-        for i, shell in enumerate(Rankshell.shells):
-            char = '├'
-            if i == len(Rankshell.shells) - 1:
-                char = '└'
-            shell_lines = str(shell).splitlines()
-            if len(shell_lines)<=1:
-                continue
-            str_ += char + shell_lines[0] + '\n'
-            if i == len(Rankshell.shells) - 1:
-                char = ' '
-            else:
-                char = '│'
-            for line in shell_lines[1:]:
-                str_ += char + line + '\n'
         return str_

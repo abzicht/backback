@@ -11,11 +11,12 @@ except ImportError:
 
 class Local(backup.Backup):
 
-    def __init__(self, rank: int, from_: str, to_: str, options:list=['-avrtlzzp']):
+    def __init__(self, rank: int, from_: str, to_: str, exclude: list=None, options:list=None):
         super().__init__(rank)
         self.from_ = from_ 
         self.to_   = to_
-        self.options = options if options is not None else ['-avrtlzzp']
+        self.exclude = exclude if exclude is not None else []
+        self.options = options if options is not None else ['-av', '--inplace']
 
     @staticmethod
     def init(config_dict: dict):
@@ -23,12 +24,16 @@ class Local(backup.Backup):
                 rank       = config_dict['rank'],
                 from_      = config_dict['from'],
                 to_        = config_dict['to'],
+                exclude    = config_dict['exclude'] if 'exclude' in config_dict else None,
                 options    = config_dict['options'] if 'options' in config_dict else None,
                 )
 
     def __backup__(self):
         args = ['rsync']
         args += self.options
+        for ex in self.exclude:
+            args.append('--exclude')
+            args.append(ex)
         args.append(self.from_)
         args.append(self.to_)
         cmd = (args)

@@ -1,4 +1,7 @@
-# There are 5 features:
+# Backback runs different backups in parallel based on their `rank`. Backups of
+# lowest rank are first. Backups of the same rank are started simultaneously.
+#
+# Backback supports five backup types:
 #   dejadup
 #   local
 #   duplicity
@@ -13,7 +16,8 @@
 #   local:
 #       Copies folders or files from `from` to `to` via rsync.
 #       It is optional to specify rsync options via `options`.
-#       The default `options` (if not otherwise specified) is `-avrtlzzp`
+#       The default `options` (if not otherwise specified) is [`-av`, `--inplace`].
+#       Use `exclude` to specify patterns that should be excluded from sync
 #   remote:
 #       Copies folders or files via rsync using ssh.
 #       Connects to `address` with `user` and copies all folders given as a
@@ -24,8 +28,12 @@
 #       Duplicity can be fully modified using the `options` list.
 #       The `from` entry is optional and required depending on the
 #       configuration passed as `options`.
+#       Duplicity `to` paths must be URLs. For local paths, make sure to prefix
+#       those with `file://`.
 #   manual:
 #       manual allows full control by passing a command as argument list `cmd`.
+#       This allows custom work to be done, e.g. in parallel to other backup
+#       types that are of the same `rank`.
 
 
 dejadup:
@@ -40,6 +48,8 @@ local:
     - rank: 0
       from: /tmp3
       to: /tmp4
+      exclude:
+        - "*.cache*"
 duplicity:
     - rank: 1
       from: /tmp/

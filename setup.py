@@ -25,7 +25,7 @@ home = str(Path.home())
 
 setup(
     name='backback',
-    version="1.0.1",
+    version="1.0.2",
     python_requires='>={}.{}'.format(*REQUIRED_PYTHON),
     author='Abzicht',
     author_email='abzicht@gmail.com',
